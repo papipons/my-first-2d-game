@@ -1,3 +1,4 @@
+local Push = require 'libs/push'
 local MathHelper = require 'libs/helpers/math'
 local Player = require 'modules/player'
 local Map = require 'modules/map'
@@ -21,9 +22,15 @@ function love.update(dt)
 end
 
 function love.draw()
-  CameraManager.cam:attach()
+  Push:start()
+  -- CameraManager.cam:attach()
     Map:draw()
-    Player:draw()
-  CameraManager.cam:detach()
+    -- Player:draw()
+  -- CameraManager.cam:detach()
+  Push:finish()
 end
 
+-- Handles screen resize
+function love.resize(w, h)
+	Push:resize(w, h)
+end
