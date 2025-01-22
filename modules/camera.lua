@@ -1,6 +1,5 @@
 local Camera = require 'libs/camera'
 local MathHelper = require 'libs/helpers/math'
-local CoreConfig = require 'modules/coreConfig'
 
 local CameraManager = {}
 
@@ -8,14 +7,10 @@ function CameraManager:load()
   self.cam = Camera()
 end
 
-function CameraManager:update(target, mapWidth, mapHeight)
+function CameraManager:update(target, virtualWidth, virtualHeight, mapWidth, mapHeight)
   self.cam:lookAt(target.x, target.y)
-
-  local width = CoreConfig.GAME_WIDTH
-  local height = CoreConfig.GAME_HEIGHT
-
-  self.cam.x = MathHelper.Clamp(self.cam.x, width / 2, mapWidth - width / 2)
-  self.cam.y = MathHelper.Clamp(self.cam.y, height / 2, mapHeight - height / 2)
+  self.cam.x = MathHelper.Clamp(self.cam.x, virtualWidth / 2, mapWidth - virtualWidth / 2)
+  self.cam.y = MathHelper.Clamp(self.cam.y, virtualHeight / 2, mapHeight - virtualHeight / 2)
 end
 
 return CameraManager

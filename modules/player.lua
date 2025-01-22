@@ -1,4 +1,5 @@
 local Anim8 = require 'libs/anim8'
+
 local MathHelper = require 'libs/helpers/math'
 
 local Player = {
