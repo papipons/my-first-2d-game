@@ -42,7 +42,7 @@ function Map:setupWalls(world)
     if object.shape == "ellipse" then
       createEllipseWall(object, world)
     elseif object.shape == "polygon" then
-      createPolygonWall(object)
+      createPolygonWall(object, world)
     elseif object.shape == "rectangle" then
       createRectangleWall(object, world)
     end
@@ -70,7 +70,25 @@ function createEllipseWall(object, world)
   table.insert(Map.walls, wall)
 end
 
-function createPolygonWall(object)
+function createPolygonWall(object, world)
+  local wall = {}
+  wall.shapeType = object.shape
+
+  local vertices = {}
+  for _, point in ipairs(object.polygon) do
+      table.insert(vertices, point.x)
+      table.insert(vertices, point.y)
+  end
+
+  wall.vertices = vertices
+
+  wall.body = love.physics.newBody(world, 0, 0, "static")
+  wall.body:setFixedRotation(true)
+
+  wall.shape = love.physics.newPolygonShape(unpack(wall.vertices))
+  wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+
+  table.insert(Map.walls, wall)
 end
 
 function createRectangleWall(object, world)
