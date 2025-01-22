@@ -12,9 +12,15 @@ function Map:load()
     width = self.width,
     height = self.height
   }
+  self.walls = {}
 end
 
 function Map:setupPhysics(world)
+  self:setupEdge(world)
+  self:setupWalls(world)
+end
+
+function Map:setupEdge(world)
   local vertices = {
     0, 0,
     self.width, 0,
@@ -24,17 +30,55 @@ function Map:setupPhysics(world)
 
   local mapBoundary = love.physics.newBody(world, 0, 0, "static")
   local mapShape = love.physics.newChainShape(true, unpack(vertices))
-  
+
   love.physics.newFixture(mapBoundary, mapShape)
+end
+
+function Map:setupWalls(world)
+  local wallsLayer = self.sti.layers["walls"]
+  if not wallsLayer then return end
+
+  for _, object in pairs(wallsLayer.objects) do
+    if object.shape == "ellipse" then
+      createEllipseWall(object)
+    elseif object.shape == "polygon" then
+      createPolygonWall(object)
+    elseif object.shape == "rectangle" then
+      createRectangleWall(object, world)
+    end
+  end
 end
 
 function Map:draw()
   self.sti:drawLayer(self.sti.layers["ground"])
-  self.sti:drawLayer(self.sti.layers["edges"])
   self.sti:drawLayer(self.sti.layers["trees2"])
   self.sti:drawLayer(self.sti.layers["trees1"])
   self.sti:drawLayer(self.sti.layers["trees0"])
   self.sti:drawLayer(self.sti.layers["bridges"])
+end
+
+function createEllipseWall(object)
+end
+
+function createPolygonWall(object)
+end
+
+function createRectangleWall(object, world)
+  local wall = {}
+  wall.x = object.x
+  wall.y = object.y
+  wall.width = object.width
+  wall.height = object.height
+
+  local bodyX = object.x + object.width / 2
+  local bodyY = object.y + object.height / 2
+  wall.body = love.physics.newBody(world, bodyX, bodyY, "static")
+  wall.body:setFixedRotation(true)
+
+  wall.shape = love.physics.newRectangleShape(object.width, object.height)
+  wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+
+  table.insert(Map.walls, wall)
 end
 
 return Map
