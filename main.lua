@@ -15,6 +15,7 @@ function love.load()
 end
 
 function love.update(dt)
+  Game.world:update(dt)
   Player:update(dt)
 
   Player.x = MathHelper.Clamp(Player.x, Player.radius, Map.width - Player.radius)

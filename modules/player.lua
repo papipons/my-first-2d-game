@@ -70,8 +70,10 @@ function Player:update(dt)
 
   if self.isAttacking then
     self.currentAnimation.animation:update(dt)
+    self.body:setLinearVelocity(0, 0)
     return
   end
+
 
   local dx, dy = 0, 0
   if love.keyboard.isDown('d') then dx = dx + 1 end
@@ -83,11 +85,11 @@ function Player:update(dt)
     dx, dy = MathHelper.NormalizeVector(dx, dy)
   end
 
+  self.body:setLinearVelocity(dx * self.speed, dy * self.speed)
+  self.x, self.y = self.body:getPosition()
+
   local isMoving = dx ~= 0 or dy ~= 0
   if isMoving then
-    self.x = self.x + (dx * self.speed * dt)
-    self.y = self.y + (dy * self.speed * dt)
-
     if dx ~= 0 then
       self.currentAnimation.xScale = dx > 0 and 1 or -1
       self.currentAnimation.animation = self.animations[dx > 0 and 'right' or 'left']
