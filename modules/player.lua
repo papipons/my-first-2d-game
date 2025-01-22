@@ -3,7 +3,7 @@ local MathHelper = require 'libs/helpers/math'
 
 local Player = {
   radius = 30,
-  speed = 10,
+  speed = 400,
   spriteWidth = 192,
   isAttacking = false,
   attackCooldown = 0.5,
@@ -67,8 +67,8 @@ function Player:update(dt)
 
   local isMoving = dx ~= 0 or dy ~= 0
   if isMoving then
-    self.x = self.x + (dx * self.speed)
-    self.y = self.y + (dy * self.speed)
+    self.x = self.x + (dx * self.speed * dt)
+    self.y = self.y + (dy * self.speed * dt)
 
     if dx ~= 0 then
       self.currentAnimation.xScale = dx > 0 and 1 or -1
