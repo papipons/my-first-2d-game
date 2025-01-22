@@ -7,9 +7,10 @@ local Map = require 'modules/map'
 local Player = require 'modules/player'
 
 function love.load()
+  Camera:load()
   Game:load()
   Map:load()
-  Camera:load()
+  Map:setupPhysics(Game.world)
   Player:load(Map.centerX, Map.centerY, Game.world)
 end
 

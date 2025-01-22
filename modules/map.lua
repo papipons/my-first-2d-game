@@ -14,6 +14,20 @@ function Map:load()
   }
 end
 
+function Map:setupPhysics(world)
+  local vertices = {
+    0, 0,
+    self.width, 0,
+    self.width, self.height,
+    0, self.height
+  }
+
+  local mapBoundary = love.physics.newBody(world, 0, 0, "static")
+  local mapShape = love.physics.newChainShape(true, unpack(vertices))
+  
+  love.physics.newFixture(mapBoundary, mapShape)
+end
+
 function Map:draw()
   self.sti:drawLayer(self.sti.layers["ground"])
   self.sti:drawLayer(self.sti.layers["edges"])
