@@ -13,6 +13,10 @@ end
 function Map:draw()
   self.sti:drawLayer(self.sti.layers["ground"])
   self.sti:drawLayer(self.sti.layers["edges"])
+  self.sti:drawLayer(self.sti.layers["trees2"])
+  self.sti:drawLayer(self.sti.layers["trees1"])
+  self.sti:drawLayer(self.sti.layers["trees0"])
+  self.sti:drawLayer(self.sti.layers["bridges"])
 end
 
 return Map

@@ -22,12 +22,12 @@ function love.update(dt)
 end
 
 function love.draw()
-  -- Push:start()
-    CameraManager.cam:attach()
-      Map:draw()
-      Player:draw()
-    CameraManager.cam:detach()
-  -- Push:finish()
+  Push:start()
+    CameraManager.cam:attach(0, 0, CoreConfig.GAME_WIDTH, CoreConfig.GAME_HEIGHT)
+        Map:draw()
+        Player:draw()
+      CameraManager.cam:detach()
+  Push:finish()
 end
 
 -- Handles screen resize
