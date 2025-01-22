@@ -15,7 +15,7 @@ function love.load()
 end
 
 function love.update(dt)
-  Game.world:update(dt)
+  Game:update(dt)
   Player:update(dt)
   Camera:update(Player, Game.virtualDimensions, Map.bounds)
 end
@@ -25,7 +25,10 @@ function love.draw()
     Camera.cam:attach(0, 0, Game.virtualWidth, Game.virtualHeight)
       Map:draw()
       Player:draw()
-      -- drawOutlines()
+
+      if (Game.debugMode) then
+        drawOutlines()
+      end
     Camera.cam:detach()
   Push:finish()
 end

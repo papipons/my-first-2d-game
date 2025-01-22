@@ -2,7 +2,8 @@ local Push = require 'libs/push'
 
 local Game = {
   virtualWidth = 640,
-  virtualHeight = 360
+  virtualHeight = 360,
+  debugMode = false
 }
 
 function Game:load()
@@ -29,6 +30,16 @@ function Game:load()
 
   -- Setup world
   self.world = love.physics.newWorld(0, 0, true)
+end
+
+function Game:update(dt)
+  self.world:update(dt)
+
+  if (love.keyboard.isDown(']')) then
+    self.debugMode = true
+  elseif (love.keyboard.isDown('[')) then
+    self.debugMode = false
+  end
 end
 
 return Game
