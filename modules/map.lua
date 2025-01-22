@@ -40,7 +40,7 @@ function Map:setupWalls(world)
 
   for _, object in pairs(wallsLayer.objects) do
     if object.shape == "ellipse" then
-      createEllipseWall(object)
+      createEllipseWall(object, world)
     elseif object.shape == "polygon" then
       createPolygonWall(object)
     elseif object.shape == "rectangle" then
@@ -57,7 +57,17 @@ function Map:draw()
   self.sti:drawLayer(self.sti.layers["bridges"])
 end
 
-function createEllipseWall(object)
+function createEllipseWall(object, world)
+  local wall = {}
+  wall.shapeType = object.shape
+  wall.x = object.x + object.width / 2
+  wall.y = object.y + object.height / 2
+  wall.radius = object.width / 2
+  wall.body = love.physics.newBody(world, wall.x, wall.y, "static")
+  wall.shape = love.physics.newCircleShape(wall.radius)
+  wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+
+  table.insert(Map.walls, wall)
 end
 
 function createPolygonWall(object)
@@ -65,6 +75,7 @@ end
 
 function createRectangleWall(object, world)
   local wall = {}
+  wall.shapeType = object.shape
   wall.x = object.x
   wall.y = object.y
   wall.width = object.width
