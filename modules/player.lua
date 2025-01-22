@@ -11,14 +11,14 @@ local Player = {
   attackTimer = 0
 }
 
-function Player:load(x, y)
+function Player:load(x, y, world)
   self.x = x
   self.y = y
 
   self.spriteSheet = love.graphics.newImage('assets/sprites/player.png')
   self.grid = Anim8.newGrid(
-    self.spriteWidth, 
-    self.spriteWidth, 
+    self.spriteWidth,
+    self.spriteWidth,
     self.spriteSheet:getWidth(), 
     self.spriteSheet:getHeight()
   )
@@ -37,6 +37,23 @@ function Player:load(x, y)
     animation = self.animations.idle,
     xScale = 1
   }
+
+  -- Setup physics
+  self.body = love.physics.newBody(
+		world,
+		self.x,
+		self.y,
+		"dynamic"
+	)
+
+	self.body:setFixedRotation(true)
+
+	self.shape = love.physics.newRectangleShape(
+		self.radius * 2,
+    self.radius * 2
+	)
+
+	self.fixture = love.physics.newFixture(self.body, self.shape)
 end
 
 function Player:update(dt)

@@ -11,7 +11,7 @@ function love.load()
   Game:load()
   Map:load()
   CameraManager:load()
-  Player:load(Map.centerX, Map.centerY)
+  Player:load(Map.centerX, Map.centerY, Game.world)
 end
 
 function love.update(dt)

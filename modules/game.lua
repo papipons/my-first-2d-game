@@ -21,6 +21,9 @@ function Game:load()
     self.windowHeight,
     { fullscreen = false, resizable = true }
   )
+
+  -- Setup world
+  self.world = love.physics.newWorld(0, 0, true)
 end
 
 return Game
