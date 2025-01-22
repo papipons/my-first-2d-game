@@ -1,5 +1,4 @@
 local Anim8 = require 'libs/anim8'
-
 local MathHelper = require 'libs/helpers/math'
 
 local Player = {
@@ -14,67 +13,58 @@ local Player = {
 function Player:load(x, y, world)
   self.x = x
   self.y = y
+  self:setupSprites()
+  self:setupPhysics(world)
+end
 
+function Player:setupSprites()
   self.spriteSheet = love.graphics.newImage('assets/sprites/player.png')
   self.grid = Anim8.newGrid(
     self.spriteWidth,
     self.spriteWidth,
-    self.spriteSheet:getWidth(), 
+    self.spriteSheet:getWidth(),
     self.spriteSheet:getHeight()
   )
+
+  local function onAttackEnd()
+    self.isAttacking = false
+    self.currentAnimation.animation = self.animations.idle
+  end
 
   self.animations = {
     idle = Anim8.newAnimation(self.grid('1-6', 1), 0.2),
     right = Anim8.newAnimation(self.grid('1-6', 2), 0.1),
     left = Anim8.newAnimation(self.grid('1-6', 2), 0.1),
-    attack = Anim8.newAnimation(self.grid('1-6', 4), 0.1, function()
-      self.isAttacking = false
-      self.currentAnimation.animation = self.animations.idle
-    end)
+    attack = Anim8.newAnimation(self.grid('1-6', 4), 0.1, onAttackEnd)
   }
 
   self.currentAnimation = {
     animation = self.animations.idle,
     xScale = 1
   }
-
-  -- Setup physics
-  self.body = love.physics.newBody(
-		world,
-		self.x,
-		self.y,
-		"dynamic"
-	)
-
-	self.body:setFixedRotation(true)
-
-	self.shape = love.physics.newRectangleShape(
-		self.radius * 2,
-    self.radius * 2
-	)
-
-	self.fixture = love.physics.newFixture(self.body, self.shape)
 end
 
-function Player:update(dt)
-  if self.attackTimer > 0 then
-    self.attackTimer = math.max(0, self.attackTimer - dt)
-  end
+function Player:setupPhysics(world)
+  self.body = love.physics.newBody(world, self.x, self.y, "dynamic")
+  self.body:setFixedRotation(true)
+  self.shape = love.physics.newRectangleShape(self.radius * 2, self.radius * 2)
+  self.fixture = love.physics.newFixture(self.body, self.shape)
+end
+
+function Player:handleAttack(dt)
+  self.attackTimer = math.max(0, self.attackTimer - dt)
 
   if love.keyboard.isDown('space') and self.attackTimer <= 0 and not self.isAttacking then
     self.isAttacking = true
     self.attackTimer = self.attackCooldown
     self.currentAnimation.animation = self.animations.attack
-    return
+    return true
   end
 
-  if self.isAttacking then
-    self.currentAnimation.animation:update(dt)
-    self.body:setLinearVelocity(0, 0)
-    return
-  end
+  return false
+end
 
-
+function Player:handleMovement()
   local dx, dy = 0, 0
   if love.keyboard.isDown('d') then dx = dx + 1 end
   if love.keyboard.isDown('a') then dx = dx - 1 end
@@ -86,20 +76,32 @@ function Player:update(dt)
   end
 
   self.body:setLinearVelocity(dx * self.speed, dy * self.speed)
-  self.x, self.y = self.body:getPosition()
 
+  return dx, dy
+end
+
+function Player:updateAnimation(dx, dy)
   local isMoving = dx ~= 0 or dy ~= 0
-  if isMoving then
-    if dx ~= 0 then
-      self.currentAnimation.xScale = dx > 0 and 1 or -1
-      self.currentAnimation.animation = self.animations[dx > 0 and 'right' or 'left']
-    end
+  if isMoving and dx ~= 0 then
+    self.currentAnimation.xScale = dx > 0 and 1 or -1
   end
 
   self.currentAnimation.animation = isMoving and 
     self.animations[self.currentAnimation.xScale == 1 and 'right' or 'left'] or 
     self.animations.idle
+end
 
+function Player:update(dt)
+  if self:handleAttack(dt) or self.isAttacking then
+    self.currentAnimation.animation:update(dt)
+    self.body:setLinearVelocity(0, 0)
+    return
+  end
+
+  local dx, dy = self:handleMovement()
+  self.x, self.y = self.body:getPosition()
+
+  self:updateAnimation(dx, dy)
   self.currentAnimation.animation:update(dt)
 end
 
