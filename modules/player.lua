@@ -91,7 +91,7 @@ function Player:updateAnimation(dx, dy)
     self.animations.idle
 end
 
-function Player:update(dt)
+function Player:update(dt, bounds)
   if self:handleAttack(dt) or self.isAttacking then
     self.currentAnimation.animation:update(dt)
     self.body:setLinearVelocity(0, 0)

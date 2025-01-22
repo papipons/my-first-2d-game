@@ -8,6 +8,10 @@ function Map:load()
   self.height = self.sti.height * self.sti.tileheight
   self.centerX = self.width / 2
   self.centerY = self.height / 2
+  self.bounds = {
+    width = self.width,
+    height = self.height
+  }
 end
 
 function Map:draw()

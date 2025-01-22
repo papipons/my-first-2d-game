@@ -6,6 +6,11 @@ local Game = {
 }
 
 function Game:load()
+  self.virtualDimensions = {
+    width = self.virtualWidth,
+    height = self.virtualHeight
+  }
+
   -- Setup window
   local windowWidth, windowHeight = love.window.getDesktopDimensions()
 

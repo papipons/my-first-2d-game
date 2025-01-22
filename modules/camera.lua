@@ -7,10 +7,10 @@ function CameraManager:load()
   self.cam = Camera()
 end
 
-function CameraManager:update(target, virtualWidth, virtualHeight, mapWidth, mapHeight)
+function CameraManager:update(target, virtualDimensions, bounds)
   self.cam:lookAt(target.x, target.y)
-  self.cam.x = MathHelper.Clamp(self.cam.x, virtualWidth / 2, mapWidth - virtualWidth / 2)
-  self.cam.y = MathHelper.Clamp(self.cam.y, virtualHeight / 2, mapHeight - virtualHeight / 2)
+  self.cam.x = MathHelper.Clamp(self.cam.x, virtualDimensions.width / 2, bounds.width - virtualDimensions.width / 2)
+  self.cam.y = MathHelper.Clamp(self.cam.y, virtualDimensions.height / 2, bounds.height - virtualDimensions.height / 2)
 end
 
 return CameraManager
