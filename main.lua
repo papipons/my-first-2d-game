@@ -23,7 +23,8 @@ end
 function love.draw()
   Push:start()
     Camera.cam:attach(0, 0, Game.virtualWidth, Game.virtualHeight)
-      Map:draw()
+      Map:drawStatic()
+      Map:setupEdge(Game.world)
       Player:draw()
 
       if (Game.debugMode) then
