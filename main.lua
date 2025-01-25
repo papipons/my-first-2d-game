@@ -26,36 +26,10 @@ function love.draw()
       Map:drawStatic()
       Map:setupEdge(Game.world)
       Player:draw()
-
-      if (Game.debugMode) then
-        drawOutlines()
-      end
     Camera.cam:detach()
   Push:finish()
 end
 
 function love.resize(w, h)
 	Push:resize(w, h)
-end
-
-function drawOutlines()
-  love.graphics.setColor(1, 1, 1)
-
-  -- Player
-  local points = {Player.body:getWorldPoints(Player.shape:getPoints())}
-  love.graphics.polygon("line", points)
-
-  -- Walls
-  if (Map.walls ~= nil) then
-    for _, wall in ipairs(Map.walls) do
-      if (wall.shapeType == "ellipse") then
-        love.graphics.circle('line', wall.x, wall.y, wall.radius)
-      elseif (wall.shapeType == "polygon") then
-        love.graphics.polygon("line", wall.body:getWorldPoints(wall.shape:getPoints()))
-      elseif (wall.shapeType == "rectangle") then
-        love.graphics.rectangle('line', wall.x, wall.y, wall.width, wall.height)
-      end
-    end
-  end
-  love.graphics.setColor(1, 1, 1)
 end
