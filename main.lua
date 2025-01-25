@@ -1,5 +1,3 @@
-local Push = require 'libs/push'
-
 local Camera = require 'modules/camera'
 
 local Game = require 'modules/game'
@@ -21,15 +19,15 @@ function love.update(dt)
 end
 
 function love.draw()
-  Push:start()
+  Game:startPush()
     Camera.cam:attach(0, 0, Game.virtualWidth, Game.virtualHeight)
       Map:drawStatic()
       Map:setupEdge(Game.world)
       Player:draw()
     Camera.cam:detach()
-  Push:finish()
+  Game:finishPush()
 end
 
 function love.resize(w, h)
-	Push:resize(w, h)
+  Game:resizePush(w, h)
 end

@@ -6,6 +6,18 @@ local Game = {
   debugMode = false
 }
 
+function Game:startPush()
+  Push:start()
+end
+
+function Game:finishPush()
+  Push:finish()
+end
+
+function Game:resizePush(w, h)
+  Push:resize(w, h)
+end
+
 function Game:load()
   self.virtualDimensions = {
     width = self.virtualWidth,
