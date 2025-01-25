@@ -3,7 +3,8 @@ local Push = require 'libs/push'
 local Game = {
   virtualWidth = 640,
   virtualHeight = 360,
-  debugMode = false
+  debugMode = false,
+  currentMap = require 'modules/map'
 }
 
 function Game:startPush()
@@ -42,6 +43,9 @@ function Game:load()
 
   -- Setup world
   self.world = love.physics.newWorld(0, 0, true)
+
+  -- Setup Map
+  self.currentMap:load(self.world)
 end
 
 function Game:update(dt)

@@ -1,27 +1,25 @@
 local Camera = require 'modules/camera'
 
 local Game = require 'modules/game'
-local Map = require 'modules/map'
 local Player = require 'modules/player'
 
 function love.load()
   Camera:load()
   Game:load()
-  Map:load(Game.world)
-  Player:load(Map.centerX, Map.centerY, Game.world)
+  Player:load(Game.currentMap.centerX, Game.currentMap.centerY, Game.world)
 end
 
 function love.update(dt)
   Game:update(dt)
   Player:update(dt)
-  Camera:update(Player, Game.virtualDimensions, Map.bounds)
+  Camera:update(Player, Game.virtualDimensions, Game.currentMap.bounds)
 end
 
 function love.draw()
   Game:startPush()
 
   Camera.cam:attach(0, 0, Game.virtualWidth, Game.virtualHeight)
-    Map:draw()
+    Game.currentMap:draw()
     Player:draw()
   Camera.cam:detach()
 
