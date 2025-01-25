@@ -4,7 +4,7 @@ local PhysicsHelper = require 'libs/helpers/physicsHelper'
 
 local Map = {}
 
-function Map:load()
+function Map:load(world)
   self.sti = Sti('assets/maps/map0.lua')
 
   self.width = self.sti.width * self.sti.tilewidth
@@ -17,6 +17,8 @@ function Map:load()
   }
 
   self.walls = {}
+
+  Map:setupPhysics(world)
 end
 
 function Map:setupPhysics(world)
@@ -56,7 +58,7 @@ function Map:setupWalls(world)
   end
 end
 
-function Map:drawStatic()
+function Map:draw()
   self.sti:drawLayer(self.sti.layers["ground"])
   self.sti:drawLayer(self.sti.layers["stumps"])
   self.sti:drawLayer(self.sti.layers["bridges"])
