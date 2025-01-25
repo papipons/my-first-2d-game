@@ -24,7 +24,6 @@ function love.draw()
   Push:start()
     Camera.cam:attach(0, 0, Game.virtualWidth, Game.virtualHeight)
       Map:drawStatic()
-      Map:drawDepthDrawables()
       Map:setupEdge(Game.world)
       Player:draw()
 

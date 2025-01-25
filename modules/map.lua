@@ -17,9 +17,6 @@ function Map:load()
   }
 
   self.walls = {}
-  self.depthDrawables = {}
-
-  self:setupDepthDrawables()
 end
 
 function Map:setupPhysics(world)
@@ -59,41 +56,10 @@ function Map:setupWalls(world)
   end
 end
 
-function Map:setupDepthDrawables()
-  local layers = {"trees.trees3", "trees.trees2", "trees.trees1"}
-  for _, layerName in pairs(layers) do
-    local data = self.sti.layers[layerName].data
-    for y, row in pairs(data) do
-      for x, tile in pairs(row) do
-        if tile then
-          local tileset = self.sti.tilesets[tile.tileset]
-          local tileWidth = tileset.tilewidth
-          local tileHeight = tileset.tileheight
-          local xPos = (x - 1) * tileWidth
-          local yPos = (y - 1) * tileHeight
-  
-          table.insert(self.depthDrawables, {
-            x = xPos,
-            y = yPos,
-            tileset = tileset,
-            quad = tile.quad
-          })
-        end
-      end
-    end
-  end
-end
-
 function Map:drawStatic()
   self.sti:drawLayer(self.sti.layers["ground"])
   self.sti:drawLayer(self.sti.layers["stumps"])
   self.sti:drawLayer(self.sti.layers["bridges"])
-end
-
-function Map:drawDepthDrawables()
-  for _, drawable in pairs(self.depthDrawables) do
-    love.graphics.draw(drawable.tileset.image, drawable.quad, drawable.x, drawable.y)
-  end
 end
 
 return Map
