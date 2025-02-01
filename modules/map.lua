@@ -1,6 +1,7 @@
 local Sti = require 'libs/sti'
 
 local PhysicsHelper = require 'libs/helpers/physicsHelper'
+local Decor = require 'modules/decor'
 
 local Map = {}
 
@@ -16,7 +17,7 @@ function Map:load(world)
     height = self.height
   }
 
-  self.walls = {}
+  self.decors = {}
 
   Map:setupPhysics(world)
 end
@@ -41,27 +42,43 @@ function Map:setupEdge(world)
 end
 
 function Map:setupWalls(world)
-  local wallsLayer = self.sti.layers["walls"]
-  if not wallsLayer then return end
+  local bridgesLayer = self.sti.layers["walls.bridges"]
+  PhysicsHelper.createWall(bridgesLayer, world)
 
-  for _, object in pairs(wallsLayer.objects) do
-    if object.shape == "ellipse" then
-      local wall = PhysicsHelper.createEllipseWall(object, world)
-      table.insert(self.walls, wall)
-    elseif object.shape == "polygon" then
-      local wall = PhysicsHelper.createPolygonWall(object, world)
-      table.insert(self.walls, wall)
-    elseif object.shape == "rectangle" then
-      local wall = PhysicsHelper.createRectangleWall(object, world)
-      table.insert(self.walls, wall)
+  local stumpsLayer = self.sti.layers["walls.stumps"]
+  PhysicsHelper.createWall(stumpsLayer, world)
+
+  Map:setupNamedDecors(world)
+end
+
+function Map:setupNamedDecors(world)
+  local othersLayer = self.sti.layers["walls.others"]
+  for _, object in ipairs(othersLayer.objects) do
+    -- Look for the scarecrow ellipse object
+    if object.name == "scarecrow" then
+      local decor = Decor:New(
+        love.graphics.newImage('assets/sprites/scarecrow.png'),
+        PhysicsHelper.createEllipseWall(object, world)
+      )
+
+      table.insert(self.decors, decor)
+    end
+
+    if object.name == "scarecrow2" then
+      local decor = Decor:New(
+        love.graphics.newImage('assets/sprites/scarecrow.png'),
+        PhysicsHelper.createEllipseWall(object, world)
+      )
+
+      table.insert(self.decors, decor)
     end
   end
 end
 
 function Map:draw()
-  self.sti:drawLayer(self.sti.layers["ground"])
-  self.sti:drawLayer(self.sti.layers["stumps"])
-  self.sti:drawLayer(self.sti.layers["bridges"])
+  self.sti:drawLayer(self.sti.layers["terrain.grass"])
+  self.sti:drawLayer(self.sti.layers["decors.bridges"])
+  self.sti:drawLayer(self.sti.layers["decors.stumps"])
 end
 
 return Map
