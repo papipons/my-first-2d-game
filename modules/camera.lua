@@ -3,6 +3,14 @@ local MathHelper = require 'libs/helpers/math'
 
 local Camera = {}
 
+function Camera:New()
+  local camera = {}
+
+  setmetatable(camera, { __index = Camera })
+
+  return camera
+end
+
 function Camera:load()
   self.cam = CameraLib()
 end
