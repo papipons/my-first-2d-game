@@ -1,10 +1,32 @@
 local PhysicsHelper = {}
 
+function PhysicsHelper.createWall(layer, world)
+  if not layer then return end
+
+  local walls = {}
+  for _, object in pairs(layer.objects) do
+    if object.shape == "ellipse" then
+      local wall = PhysicsHelper.createEllipseWall(object, world)
+      table.insert(walls, wall)
+    elseif object.shape == "polygon" then
+      local wall = PhysicsHelper.createPolygonWall(object, world)
+      table.insert(walls, wall)
+    elseif object.shape == "rectangle" then
+      local wall = PhysicsHelper.createRectangleWall(object, world)
+      table.insert(walls, wall)
+    end
+  end
+
+  return walls
+end
+
 function PhysicsHelper.createEllipseWall(object, world)
   local wall = {}
   wall.shapeType = object.shape
   wall.x = object.x + object.width / 2
   wall.y = object.y + object.height / 2
+  wall.height = object.height
+  wall.width = object.width
   wall.radius = object.width / 2
   wall.body = love.physics.newBody(world, wall.x, wall.y, "static")
   wall.shape = love.physics.newCircleShape(wall.radius)
@@ -16,6 +38,10 @@ end
 function PhysicsHelper.createPolygonWall(object, world)
   local wall = {}
   wall.shapeType = object.shape
+  wall.x = object.x + object.width / 2
+  wall.y = object.y + object.height / 2
+  wall.height = object.height
+  wall.width = object.width
 
   local vertices = {}
   for _, point in ipairs(object.polygon) do
