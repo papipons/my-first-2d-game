@@ -1,25 +1,30 @@
-local Sti = require 'libs/sti'
+local modDecor = require 'modules/decor'
 
 local PhysicsHelper = require 'libs/helpers/physicsHelper'
-local Decor = require 'modules/decor'
 
 local Map = {}
 
-function Map:load(world)
-  self.sti = Sti('assets/maps/map0.lua')
+function Map:New(sti)
+  local map = setmetatable({}, { __index = Map })
+  local width = sti.width * sti.tilewidth
+  local height = sti.height * sti.tileheight
 
-  self.width = self.sti.width * self.sti.tilewidth
-  self.height = self.sti.height * self.sti.tileheight
-  self.centerX = self.width / 2
-  self.centerY = self.height / 2
-  self.bounds = {
-    width = self.width,
-    height = self.height
+  map.sti = sti
+  map.width = width
+  map.height = height
+  map.centerX = width / 2
+  map.centerY = height / 2
+  map.bounds = {
+    width = width,
+    height = height
   }
+  map.decors = {}
 
-  self.decors = {}
+  return map
+end
 
-  Map:setupPhysics(world)
+function Map:load(world)
+  self:setupPhysics(world)
 end
 
 function Map:setupPhysics(world)
@@ -48,7 +53,7 @@ function Map:setupWalls(world)
   local stumpsLayer = self.sti.layers["walls.stumps"]
   PhysicsHelper.createWall(stumpsLayer, world)
 
-  Map:setupNamedDecors(world)
+  self:setupNamedDecors(world)
 end
 
 function Map:setupNamedDecors(world)
@@ -56,7 +61,7 @@ function Map:setupNamedDecors(world)
   for _, object in ipairs(othersLayer.objects) do
     -- Look for the scarecrow ellipse object
     if object.name == "scarecrow" then
-      local decor = Decor:New(
+      local decor = modDecor:New(
         love.graphics.newImage('assets/sprites/scarecrow.png'),
         PhysicsHelper.createEllipseWall(object, world)
       )
@@ -65,7 +70,7 @@ function Map:setupNamedDecors(world)
     end
 
     if object.name == "scarecrow2" then
-      local decor = Decor:New(
+      local decor = modDecor:New(
         love.graphics.newImage('assets/sprites/scarecrow.png'),
         PhysicsHelper.createEllipseWall(object, world)
       )

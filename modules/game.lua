@@ -1,4 +1,7 @@
+local modMap = require 'modules/map'
+
 local Push = require 'libs/push'
+local Sti = require 'libs/sti'
 
 local Game = {}
 
@@ -8,7 +11,9 @@ function Game:New()
   game.vWidth = 640
   game.vHeight = 360
   game.debugMode = false
-  game.currentMap = require 'modules/map'
+
+  local defaultMapSTI = Sti('assets/maps/map0.lua')
+  game.currentMap = modMap:New(defaultMapSTI)
 
   return game
 end
