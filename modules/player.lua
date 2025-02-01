@@ -10,6 +10,14 @@ local Player = {
   attackTimer = 0
 }
 
+function Player:New()
+  local player = {}
+
+  setmetatable(player, { __index = Player })
+
+  return player
+end
+
 function Player:load(x, y, world)
   self.x = x
   self.y = y
