@@ -9,8 +9,8 @@ return {
   height = 30,
   tilewidth = 64,
   tileheight = 64,
-  nextlayerid = 19,
-  nextobjectid = 49,
+  nextlayerid = 20,
+  nextobjectid = 56,
   properties = {},
   tilesets = {
     {
@@ -537,14 +537,27 @@ return {
           properties = {},
           objects = {
             {
-              id = 47,
+              id = 54,
               name = "scarecrow",
               type = "",
               shape = "ellipse",
-              x = 1516.46,
-              y = 1454.43,
-              width = 32.9114,
-              height = 32.9114,
+              x = 1535.16,
+              y = 1462.41,
+              width = 0,
+              height = 0,
+              rotation = 0,
+              visible = true,
+              properties = {}
+            },
+            {
+              id = 55,
+              name = "scarecrow2",
+              type = "",
+              shape = "ellipse",
+              x = 1408.8,
+              y = 1407.98,
+              width = 0,
+              height = 0,
               rotation = 0,
               visible = true,
               properties = {}
