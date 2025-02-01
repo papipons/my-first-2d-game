@@ -7,6 +7,14 @@ local Game = {
   currentMap = require 'modules/map'
 }
 
+function Game:New()
+  local game = {}
+
+  setmetatable(game, { __index = Game })
+
+  return game
+end
+
 function Game:startPush()
   Push:start()
 end

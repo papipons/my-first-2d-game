@@ -1,30 +1,31 @@
 local modCamera = require 'modules/camera'
 local modPlayer = require 'modules/player'
+local modGame = require 'modules/game'
 
 local camera = modCamera:New()
-local Game = require 'modules/game'
+local game = modGame:New()
 local player = modPlayer:New()
 
 function love.load()
   camera:load()
-  Game:load()
-  player:load(Game.currentMap.centerX, Game.currentMap.centerY, Game.world)
+  game:load()
+  player:load(game.currentMap.centerX, game.currentMap.centerY, game.world)
 end
 
 function love.update(dt)
-  Game:update(dt)
+  game:update(dt)
   player:update(dt)
-  camera:update(player, Game.virtualDimensions, Game.currentMap.bounds)
+  camera:update(player, game.virtualDimensions, game.currentMap.bounds)
 end
 
 function love.draw()
-  Game:startPush()
+  game:startPush()
 
-  camera.cam:attach(0, 0, Game.vWidth, Game.vHeight)
-    Game.currentMap:draw()
+  camera.cam:attach(0, 0, game.vWidth, game.vHeight)
+    game.currentMap:draw()
 
     local drawables = {player}
-    for _, decor in ipairs(Game.currentMap.decors) do
+    for _, decor in ipairs(game.currentMap.decors) do
       table.insert(drawables, decor)
     end
 
@@ -34,9 +35,9 @@ function love.draw()
     end
   camera.cam:detach()
 
-  Game:finishPush()
+  game:finishPush()
 end
 
 function love.resize(w, h)
-  Game:resizePush(w, h)
+  game:resizePush(w, h)
 end
