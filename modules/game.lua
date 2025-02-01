@@ -1,8 +1,8 @@
 local Push = require 'libs/push'
 
 local Game = {
-  virtualWidth = 640,
-  virtualHeight = 360,
+  vWidth = 640,
+  vHeight = 360,
   debugMode = false,
   currentMap = require 'modules/map'
 }
@@ -21,8 +21,8 @@ end
 
 function Game:load()
   self.virtualDimensions = {
-    width = self.virtualWidth,
-    height = self.virtualHeight
+    width = self.vWidth,
+    height = self.vHeight
   }
 
   -- Setup window
@@ -34,8 +34,8 @@ function Game:load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
 
   Push:setupScreen(
-    self.virtualWidth,
-    self.virtualHeight,
+    self.vWidth,
+    self.vHeight,
     self.windowWidth,
     self.windowHeight,
     { fullscreen = false, resizable = true }
