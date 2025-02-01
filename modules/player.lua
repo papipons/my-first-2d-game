@@ -115,8 +115,8 @@ end
 function Player:draw()
   self.currentAnimation.animation:draw(
     self.spriteSheet, 
-    self.x, 
-    self.y, 
+    self.x,
+    self.y,
     0,
     self.currentAnimation.xScale,
     1,

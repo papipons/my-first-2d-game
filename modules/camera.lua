@@ -4,8 +4,7 @@ local MathHelper = require 'libs/helpers/math'
 local Camera = {}
 
 function Camera:New()
-  local camera = setmetatable({}, { __index = Camera })
-  return camera
+  return setmetatable({}, { __index = self })
 end
 
 function Camera:load()
@@ -13,9 +12,12 @@ function Camera:load()
 end
 
 function Camera:update(target, vDimensions, bounds)
+  local halfWidth = vDimensions.width / 2
+  local halfHeight = vDimensions.height / 2
+
   self.cam:lookAt(target.x, target.y)
-  self.cam.x = MathHelper.Clamp(self.cam.x, vDimensions.width / 2, bounds.width - vDimensions.width / 2)
-  self.cam.y = MathHelper.Clamp(self.cam.y, vDimensions.height / 2, bounds.height - vDimensions.height / 2)
+  self.cam.x = MathHelper.Clamp(self.cam.x, halfWidth, bounds.width - halfWidth)
+  self.cam.y = MathHelper.Clamp(self.cam.y, halfHeight, bounds.height - halfHeight)
 end
 
 return Camera

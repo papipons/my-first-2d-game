@@ -20,21 +20,18 @@ end
 
 function love.draw()
   game:startPush()
-
   camera.cam:attach(0, 0, game.vWidth, game.vHeight)
-    game.currentMap:draw()
 
-    local drawables = {player}
-    for _, decor in ipairs(game.currentMap.decors) do
-      table.insert(drawables, decor)
-    end
+  game.currentMap:draw()
 
-    table.sort(drawables, function(a, b) return a.y < b.y end)
-    for _, drawable in ipairs(drawables) do
-      drawable:draw()
-    end
+  local drawables = {player, unpack(game.currentMap.decors)}
+  table.sort(drawables, function(a, b) return a.y < b.y end)
+
+  for _, drawable in ipairs(drawables) do
+    drawable:draw()
+  end
+
   camera.cam:detach()
-
   game:finishPush()
 end
 
