@@ -1,19 +1,17 @@
 local Anim8 = require 'libs/anim8'
 local MathHelper = require 'libs/helpers/math'
 
-local Player = {
-  radius = 30,
-  speed = 400,
-  spriteWidth = 192,
-  isAttacking = false,
-  attackCooldown = 0.5,
-  attackTimer = 0
-}
+local Player = {}
 
 function Player:New()
-  local player = {}
+  local player = setmetatable({}, { __index = Player })
 
-  setmetatable(player, { __index = Player })
+  player.radius = 30
+  player.speed = 400
+  player.spriteWidth = 192
+  player.isAttacking = false
+  player.attackCooldown = 0.5
+  player.attackTimer = 0
 
   return player
 end

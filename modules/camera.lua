@@ -4,10 +4,7 @@ local MathHelper = require 'libs/helpers/math'
 local Camera = {}
 
 function Camera:New()
-  local camera = {}
-
-  setmetatable(camera, { __index = Camera })
-
+  local camera = setmetatable({}, { __index = Camera })
   return camera
 end
 

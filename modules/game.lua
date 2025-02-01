@@ -1,16 +1,14 @@
 local Push = require 'libs/push'
 
-local Game = {
-  vWidth = 640,
-  vHeight = 360,
-  debugMode = false,
-  currentMap = require 'modules/map'
-}
+local Game = {}
 
 function Game:New()
-  local game = {}
+  local game = setmetatable({}, { __index = Game })
 
-  setmetatable(game, { __index = Game })
+  game.vWidth = 640
+  game.vHeight = 360
+  game.debugMode = false
+  game.currentMap = require 'modules/map'
 
   return game
 end

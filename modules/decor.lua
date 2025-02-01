@@ -1,13 +1,11 @@
 local Decor = {}
 
 function Decor:New(image, object)
-  local decor = {
-    image = image,
-    object = object,
-    y = object.y
-  }
+  local decor = setmetatable({}, { __index = Decor })
 
-  setmetatable(decor, { __index = Decor })
+  decor.image = image
+  decor.object = object
+  decor.y = object.y
 
   return decor
 end
